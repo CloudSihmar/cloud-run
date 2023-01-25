@@ -1,0 +1,9 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ['build', '-t', 'us-west2-docker.pkg.dev/kubernetes-368314/quickstart-docker-repo/image3:$COMMIT_SHA', '.']
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "us-west2-docker.pkg.dev/kubernetes-368314/quickstart-docker-repo/image3:$COMMIT_SHA"]
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'service', '--image', 'us-west2-docker.pkg.dev/kubernetes-368314/quickstart-docker-repo/image3:$COMMIT_SHA', '--allow-unauthenticated', '--port', '80', '--region', 'us-west2']
+
